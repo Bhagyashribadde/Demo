@@ -1,0 +1,24 @@
+[build]
+  command = "npm install"  # Installs dependencies
+  functions = "functions"  # Points to your Netlify Functions folder
+  publish = "public"       # Empty folder (required but unused for functions)
+
+# Redirects requests to /webhook to your Netlify Function
+[[redirects]]
+  from = "/webhook"
+  to = "/.netlify/functions/webhook"
+  status = 200
+  force = true             # Overrides existing paths
+
+# Optional: Set Node.js version (recommended for OpenAI compatibility)
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["axios"]
+
+# Optional: Add security headers (recommended)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "default-src 'self'"
